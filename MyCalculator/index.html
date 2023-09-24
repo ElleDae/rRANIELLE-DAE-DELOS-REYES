@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .calculator {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px #aaa;
+      		background-color: yellow;
+        }
+        .result {
+            font-size: 24px;
+            text-align: right;
+            margin-bottom: 10px;
+      		background-color: #fff;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 5px;
+      		background-color: black;
+        }
+        .button {
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+        .button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="result" id="output">0</div>
+        <div class="buttons">
+            <div class="button" onclick="clearOutput()">C</div>
+            <div class="button" onclick="appendToOutput('7')">7</div>
+            <div class="button" onclick="appendToOutput('8')">8</div>
+            <div class="button" onclick="appendToOutput('9')">9</div>
+            <div class="button" onclick="appendToOutput('4')">4</div>
+            <div class="button" onclick="appendToOutput('5')">5</div>
+            <div class="button" onclick="appendToOutput('6')">6</div>
+            <div class="button" onclick="appendToOutput('1')">1</div>
+            <div class="button" onclick="appendToOutput('2')">2</div>
+            <div class="button" onclick="appendToOutput('3')">3</div>
+            <div class="button" onclick="appendToOutput('0')">0</div>
+            <div class="button" onclick="appendToOutput('.')">.</div>
+            <div class="button" onclick="performOperation('+')">+</div>
+            <div class="button" onclick="performOperation('-')">-</div>
+            <div class="button" onclick="performOperation('*')">*</div>
+            <div class="button" onclick="performOperation('/')">/</div>
+            <div class="button" onclick="calculateResult()">=</div>
+        </div>
+    </div>
+
+    <script>
+        let output = document.getElementById("output");
+        let currentInput = "";
+        let currentOperator = "";
+        let prevInput = "";
+
+        function appendToOutput(value) {
+            currentInput += value;
+            output.innerHTML = currentInput;
+        }
+
+        function performOperation(operator) {
+            if (currentInput !== "") {
+                if (currentOperator !== "") {
+                    calculateResult();
+                }
+                currentOperator = operator;
+                prevInput = currentInput;
+                currentInput = "";
+            }
+        }
+
+        function calculateResult() {
+            if (currentInput !== "") {
+                switch (currentOperator) {
+                    case '+':
+                        currentInput = String(parseFloat(prevInput) + parseFloat(currentInput));
+                        break;
+                    case '-':
+                        currentInput = String(parseFloat(prevInput) - parseFloat(currentInput));
+                        break;
+                    case '*':
+                        currentInput = String(parseFloat(prevInput) * parseFloat(currentInput));
+                        break;
+                    case '/':
+                        if (currentInput !== "0") {
+                            currentInput = String(parseFloat(prevInput) / parseFloat(currentInput));
+                        } else {
+                            currentInput = "Error";
+                        }
+                        break;
+                }
+                currentOperator = "";
+                prevInput = "";
+                output.innerHTML = currentInput;
+            }
+        }
+
+        function clearOutput() {
+            currentInput = "";
+            currentOperator = "";
+            prevInput = "";
+            output.innerHTML = "0";
+        }
+    </script>
+</body>
+</html>
